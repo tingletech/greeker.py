@@ -1,0 +1,11 @@
+import nltk
+
+with open('sample.txt', 'r') as f:
+    sample = f.read()
+        
+sentences = nltk.sent_tokenize(sample)
+tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]
+tagged_sentences = [nltk.pos_tag(sentence) for sentence in tokenized_sentences]
+chunked_sentences = nltk.batch_ne_chunk(tagged_sentences, binary=True)
+
+print chunked_sentences[0]
