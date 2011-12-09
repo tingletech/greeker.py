@@ -52,7 +52,7 @@ for sentence in tagged_sentences:
             singular = p.singular_noun(tagged_word[0]);
             piglatin = p.plural_noun(makePigLatin(singular))
             if tagged_word[0].istitle():
-                piglatin.lower().title()
+                piglatin = piglatin.lower().title()
             sample = re.sub(tagged_word[0]+"(\W)",piglatin+"\\1",sample)
 
 print sample
