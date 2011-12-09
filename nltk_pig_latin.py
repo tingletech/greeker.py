@@ -2,6 +2,8 @@
 import nltk
 import nltk.data
 import re
+import inflect
+p = inflect.engine()
 
 # http://pythonicprose.blogspot.com/2009/09/python-pig-latin-generator.html
 def makePigLatin(word):
@@ -33,11 +35,15 @@ for sentence in tagged_sentences:
     for tagged_word in sentence:
         print tagged_word
         if tagged_word[1] == 'NNP':
-            sample = re.sub(tagged_word[0],makePigLatin(tagged_word[0]).lower().title(),sample)
+            sample = re.sub(tagged_word[0]+"(\W)",makePigLatin(tagged_word[0]).lower().title()+"\\1",sample)
         if tagged_word[1] == 'NN':
             if tagged_word[0].istitle():
-                sample = re.sub(tagged_word[0],makePigLatin(tagged_word[0]).lower().title(),sample)
+                sample = re.sub(tagged_word[0]+"(\W)",makePigLatin(tagged_word[0]).lower().title()+"\\1",sample)
             else:
-                sample = re.sub(tagged_word[0],makePigLatin(tagged_word[0]),sample)
+                sample = re.sub(tagged_word[0]+"(\W)",makePigLatin(tagged_word[0])+"\\1",sample)
+        if tagged_word[1] == 'NNS':
+            singular = p.singular_noun(tagged_word[0]);
+            piglatin = p.plural_noun(makePigLatin(singular))
+            sample = re.sub(tagged_word[0]+"(\W)",piglatin+"\\1",sample)
 
 print sample
