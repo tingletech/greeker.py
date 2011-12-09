@@ -46,7 +46,6 @@ for sentence in tagged_sentences:
             singular = p.singular_noun(tagged_word[0]);
             piglatin = p.plural_noun(makePigLatin(singular))
             sample = re.sub(tagged_word[0]+"(\W)",piglatin+"\\1",sample)
-            continue
         # replace proper nouns and nouns
         if tagged_word[1] in ['NN', 'NNP']:
             sample = re.sub(tagged_word[0]+"(\W)",makePigLatin(tagged_word[0])+"\\1",sample)
