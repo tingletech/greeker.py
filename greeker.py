@@ -56,9 +56,10 @@ def update_xml(node, greek_text):
     new_text = ''
     # TODO; construction of the new_ texts need to retain whitespace
     # pop some new words off the greek_text array
-    for word in node.text.split():
-        new_text += greek_text.pop(0)
-        new_text += " "
+    if node.text:
+        for word in node.text.split():
+            new_text += greek_text.pop(0)
+            new_text += " "
     # set the new text, up to the first child element
     node.text = new_text
     # this gets child elements... not all DOM nodes	
@@ -68,10 +69,11 @@ def update_xml(node, greek_text):
         # ElementTree supports mixed content via .tail... 
         # tails of our decendents are part of node
         new_mixed_text = ''
-        for word in desc.tail.split():
-            new_mixed_text += greek_text.pop(0)
-            new_mixed_text += " "
-        desc.tail = new_mixed_text
+        if desc.tail:
+            for word in desc.tail.split():
+                new_mixed_text += greek_text.pop(0)
+                new_mixed_text += " "
+            desc.tail = new_mixed_text
 
 def pig_latinize(noun):
     """ convert one word into pig latin """ 
