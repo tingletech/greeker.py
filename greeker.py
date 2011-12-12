@@ -16,14 +16,14 @@ def main(argv=None):
 
 def greekize_file(infile, outfile):
     """greekize the infile to outfile"""
-    input = etree.parse(infile)
-    text_nodes = input.xpath("//text()")
+    file = etree.parse(infile)
+    text_nodes = file.xpath("//text()")
     # pull sample text from the text nodes
     text = ''.join(text_nodes)
     greek_text = greekize_text(text).split()
     # pass an array because we are recursivly .pop(0) the new words from it
-    update_xml(input.getroot(), greek_text)
-    input.write(outfile, pretty_print=True)
+    update_xml(file.getroot(), greek_text)
+    file.write(outfile, pretty_print=True)
 
 def greekize_text(text):
     """takes a string of text as input; changes nouns to pig latin"""
@@ -39,7 +39,7 @@ def greekize_text(text):
     for sentence in tagged_sentences:
         for tagged_word in sentence:
             # skip "(", not sure what other characters nltk will put in the parse tree
-            if tagged_word[0] in ["(", ")"]:
+            if tagged_word[0] in ["(", ")", "[", "]"]:
                 continue
             # replace plural nouns with pig latin
             if tagged_word[1] == 'NNS':
