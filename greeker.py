@@ -23,7 +23,7 @@ def greekize_file(infile, outfile):
     greek_text = greekize_text(text).split()
     # pass an array because we are recursivly .pop(0) the new words from it
     update_xml(input.getroot(), greek_text)
-    input.write(outfile)
+    input.write(outfile, pretty_print=True)
 
 def greekize_text(text):
     """takes a string of text as input; changes nouns to pig latin"""
