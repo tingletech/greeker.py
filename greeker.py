@@ -60,8 +60,8 @@ def update_xml(node, greek_text):
         for word in node.text.split():
             new_text += greek_text.pop(0)
             new_text += " "
-    # set the new text, up to the first child element
-    node.text = new_text
+        # set the new text, up to the first child element
+        node.text = new_text
     # this gets child elements... not all DOM nodes	
     for desc in node.getchildren():
         # recursive call
