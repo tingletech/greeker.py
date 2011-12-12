@@ -1,4 +1,3 @@
-# started from nltk example at https://gist.github.com/322906/
 """ greeker.py 
     pig-latinizes an XML document to produce a specimine for layout testing
 """
@@ -74,10 +73,10 @@ def update_xml(node, greek_text):
             new_mixed_text += " "
         desc.tail = new_mixed_text
 
-def pig_latinize(oword):
+def pig_latinize(noun):
     """ convert one word into pig latin """ 
     # http://pythonicprose.blogspot.com/2009/09/python-pig-latin-generator.html
-    word = oword.lower()
+    word = noun.lower()
     m = len(word)
     vowels = "a", "e", "i", "o", "u", "y" 
     # short words are not converted 
@@ -93,7 +92,7 @@ def pig_latinize(oword):
         else:
             piglatin = word[m:]+word[:m]+"ay"
         # give the return the same title case as the input
-        if word.istitle():
+        if noun.istitle():
             piglatin = piglatin.lower().title()
         return piglatin
 
