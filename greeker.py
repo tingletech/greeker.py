@@ -66,14 +66,13 @@ def update_xml(node, greek_text):
     for desc in node.getchildren():
         # recursive call
         update_xml(desc, greek_text)
-        # ElementTree supports mixed content via .tail... 
-        # tails of our decendents are part of node
-        new_mixed_text = ''
-        if desc.tail:
-            for word in desc.tail.split():
-                new_mixed_text += greek_text.pop(0)
-                new_mixed_text += " "
-            desc.tail = new_mixed_text
+    # ElementTree supports mixed content via .tail... 
+    new_mixed_text = ''
+    if node.tail:
+        for word in node.tail.split():
+            new_mixed_text += greek_text.pop(0)
+            new_mixed_text += " "
+        node.tail = new_mixed_text
 
 def pig_latinize(noun):
     """ convert one word into pig latin """ 
