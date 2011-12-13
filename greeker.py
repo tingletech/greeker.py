@@ -66,11 +66,15 @@ def update_xml(node, greek_text):
         # recursive call
         update_xml(desc, greek_text)
     # ElementTree supports mixed content via .tail... 
-    new_mixed_text = ''
     if node.tail:
         node.tail = update_text(node.tail, greek_text)
 
 def update_text(text_from_node,greek_text):
+    """create new string for element .text or .tail"""
+    # if I don't have any words; just copy the whitespace
+    if not(re.search("\w", text_from_node)):
+        return text_from_node
+    # otherwise; pop some words off the stack
     new_text = ''
     for word in text_from_node.split():
         new_text += greek_text.pop(0)
