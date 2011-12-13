@@ -14,23 +14,23 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
     # TODO: make this real the argv
-    greekize_file("sample.xml", "out.xml")
+    # TODO: allow different scrambler options via sys.argv
+    scrambler = consonant_vowel_sensitive_random_word
+    greekize_file("sample.xml", "out.xml", scrambler)
 
-def greekize_file(infile, outfile):
+def greekize_file(infile, outfile, scrambler):
     """greekize the infile to outfile"""
     file = etree.parse(infile)
     text_nodes = file.xpath("//text()")
     # pull sample text from the text nodes
     text = ''.join(text_nodes)
-    greek_text = greekize_text(text).split()
+    greek_text = greekize_text(text, scrambler).split()
     # pass an array because we are recursivly .pop(0) the new words from it
     update_xml(file.getroot(), greek_text)
     file.write(outfile, pretty_print=True)
 
-def greekize_text(text):
+def greekize_text(text, scrambler):
     """takes a string of text as input; changes nouns to pig latin"""
-
-    scrambler = consonant_vowel_sensitive_random_word
 
     # array of all the sentences (is this necessary?)
     sentences = nltk.sent_tokenize(text)
