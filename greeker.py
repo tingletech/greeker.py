@@ -57,15 +57,10 @@ def greekize_text(text, scrambler):
 
 def update_xml(node, greek_text):
     """update the xml document with the new words"""
-    new_text = ''
     # TODO; construction of the new_ texts need to retain whitespace
     # pop some new words off the greek_text array
     if node.text:
-        for word in node.text.split():
-            new_text += greek_text.pop(0)
-            new_text += " "
-        # set the new text, up to the first child element
-        node.text = new_text
+        node.text = update_text(node.text, greek_text)
     # this gets child elements... not all DOM nodes	
     for desc in node.getchildren():
         # recursive call
@@ -73,10 +68,14 @@ def update_xml(node, greek_text):
     # ElementTree supports mixed content via .tail... 
     new_mixed_text = ''
     if node.tail:
-        for word in node.tail.split():
-            new_mixed_text += greek_text.pop(0)
-            new_mixed_text += " "
-        node.tail = new_mixed_text
+        node.tail = update_text(node.tail, greek_text)
+
+def update_text(text_from_node,greek_text):
+    new_text = ''
+    for word in text_from_node.split():
+        new_text += greek_text.pop(0)
+        new_text += " "
+    return new_text
 
 def consonant_vowel_sensitive_random_word(word):
     """scramble word, keeping vowles in the same place"""
