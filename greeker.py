@@ -14,10 +14,9 @@ from string import maketrans
 import argparse
 
 def main(argv=None):
-    if argv is None:
-        argv = sys.argv
 
-    parser = argparse.ArgumentParser(description='Create greeked text for XML testing.')
+    parser = argparse.ArgumentParser(description='Create greeked text for XML testing.',
+                     epilog="scrambles nouns in an XML document to produce a specimine for layout testing")
 
     parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
                      help='input XML (or standard input)',
@@ -29,14 +28,15 @@ def main(argv=None):
                    const='pig',
                    help='replace using pig latin rather than more random "words"')
 
-    args = parser.parse_args()
+    if argv is None:
+        argv = parser.parse_args()
 
-    if args.piglatin:
+    if argv.piglatin:
         scrambler = pig_latinize
     else:
         scrambler = consonant_vowel_sensitive_random_word
 
-    greekize_file(args.infile, args.outfile, scrambler)
+    greekize_file(argv.infile, argv.outfile, scrambler)
 
 def greekize_file(infile, outfile, scrambler):
     """greekize the infile to outfile"""
