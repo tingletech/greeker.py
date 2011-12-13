@@ -1,7 +1,9 @@
+#!/usr/bin/env python
 """ greeker.py 
     scrambles nouns in an XML document to produce a specimine for layout testing
 """
 import sys
+import argparse
 import nltk
 from lxml import etree
 import re
@@ -9,14 +11,32 @@ import inflect
 p = inflect.engine()
 import random
 from string import maketrans
+import argparse
 
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    # TODO: make this real the argv
-    # TODO: allow different scrambler options via sys.argv
-    scrambler = consonant_vowel_sensitive_random_word
-    greekize_file("sample.xml", "out.xml", scrambler)
+
+    parser = argparse.ArgumentParser(description='Create greeked text for XML testing.')
+
+    parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
+                     help='input XML (or standard input)',
+                     default=sys.stdin)
+    parser.add_argument('outfile', nargs='?', type=argparse.FileType('w'),
+                     help='output greeked XML (or standard out)',
+                     default=sys.stdout)
+    parser.add_argument('--piglatin', action='store_const',
+                   const='pig',
+                   help='replace using pig latin rather than more random "words"')
+
+    args = parser.parse_args()
+
+    if args.piglatin:
+        scrambler = pig_latinize
+    else:
+        scrambler = consonant_vowel_sensitive_random_word
+
+    greekize_file(args.infile, args.outfile, scrambler)
 
 def greekize_file(infile, outfile, scrambler):
     """greekize the infile to outfile"""
