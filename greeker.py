@@ -1,5 +1,5 @@
 """ greeker.py 
-    pig-latinizes an XML document to produce a specimine for layout testing
+    scrambles nouns in an XML document to produce a specimine for layout testing
 """
 import sys
 import nltk
@@ -7,6 +7,8 @@ from lxml import etree
 import re
 import inflect
 p = inflect.engine()
+import random
+from string import maketrans
 
 def main(argv=None):
     if argv is None:
@@ -28,6 +30,8 @@ def greekize_file(infile, outfile):
 def greekize_text(text):
     """takes a string of text as input; changes nouns to pig latin"""
 
+    scrambler = consonant_vowel_sensitive_random_word
+
     # array of all the sentences (is this necessary?)
     sentences = nltk.sent_tokenize(text)
     tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]
@@ -44,11 +48,11 @@ def greekize_text(text):
             # replace plural nouns with pig latin
             if tagged_word[1] == 'NNS':
                 singular = p.singular_noun(tagged_word[0]);
-                piglatin = p.plural_noun(pig_latinize(singular))
-                text = re.sub(tagged_word[0]+"(\W)",piglatin+"\\1",text)
+                scrambled = p.plural_noun(scrambler(singular))
+                text = re.sub(tagged_word[0]+"(\W)",scrambled+"\\1",text)
             # replace proper nouns and nouns
             if tagged_word[1] in ['NN', 'NNP']:
-                text = re.sub(tagged_word[0]+"(\W)",pig_latinize(tagged_word[0])+"\\1",text)
+                text = re.sub(tagged_word[0]+"(\W)",scrambler(tagged_word[0])+"\\1",text)
     return text
 
 def update_xml(node, greek_text):
@@ -73,6 +77,23 @@ def update_xml(node, greek_text):
             new_mixed_text += greek_text.pop(0)
             new_mixed_text += " "
         node.tail = new_mixed_text
+
+def consonant_vowel_sensitive_random_word(word):
+    """scramble word, keeping vowles in the same place"""
+    random.seed(word)
+    vowles = "aeiouy"
+    consonants = "bcdfghjklmnpqrstvwxz"
+    new_vowles = list(vowles)
+    new_consonants = list(consonants)
+    # shuffles in place
+    random.shuffle(new_vowles)
+    random.shuffle(new_consonants)
+    vowles = vowles + vowles.upper()
+    consonants = consonants + consonants.upper()
+    trans_to = ''.join(new_vowles) + ''.join(new_vowles).upper()
+    trans_to += ''.join(new_consonants) + ''.join(new_consonants).upper()
+    randomize = maketrans(vowles + consonants, trans_to)
+    return word.translate(randomize)
 
 def pig_latinize(noun):
     """ convert one word into pig latin """ 
