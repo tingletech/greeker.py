@@ -14,10 +14,9 @@ from string import maketrans
 import argparse
 
 def main(argv=None):
-
+    # argument parser 
     parser = argparse.ArgumentParser(description='Create greeked text for XML testing.',
                      epilog="scrambles nouns in an XML document to produce a specimen for layout testing")
-
     parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
                      help='input XML (or standard input)',
                      default=sys.stdin)
@@ -27,20 +26,22 @@ def main(argv=None):
     parser.add_argument('--piglatin', action='store_const',
                    const='pig',
                    help='replace using pig latin rather than more random "words"')
-
     if argv is None:
         argv = parser.parse_args()
 
+    # pick the text transformation method
     if argv.piglatin:
         scrambler = pig_latinize
     else:
         scrambler = consonant_vowel_sensitive_random_word
 
+    # call the function that does the work
     greekize_file(argv.infile, argv.outfile, scrambler)
 
 def greekize_file(infile, outfile, scrambler):
     """greekize the infile to outfile"""
     file = etree.parse(infile)
+    # TODO: whitespace: filter out the text() nodes that have no words here
     text_nodes = file.xpath("//text()")
     # pull sample text from the text nodes
     text = ''.join(text_nodes)
@@ -62,14 +63,17 @@ def greekize_text(text, scrambler):
     # pig latinize all nouns in the text
     for sentence in tagged_sentences:
         for tagged_word in sentence:
+
             # skip "(", not sure what other characters nltk will put in the parse tree
             if tagged_word[0] in ["(", ")", "[", "]"]:
                 continue
+
             # replace plural nouns with pig latin
             if tagged_word[1] == 'NNS':
                 singular = p.singular_noun(tagged_word[0]);
                 scrambled = p.plural_noun(scrambler(singular))
                 text = re.sub(tagged_word[0]+"(\W)",scrambled+"\\1",text)
+
             # replace proper nouns and nouns
             if tagged_word[1] in ['NN', 'NNP']:
                 text = re.sub(tagged_word[0]+"(\W)",scrambler(tagged_word[0])+"\\1",text)
@@ -78,22 +82,27 @@ def greekize_text(text, scrambler):
 def update_xml(node, greek_text):
     """update the xml document with the new words"""
     # TODO; construction of the new_ texts need to retain whitespace
+
     # pop some new words off the greek_text array
     if node.text:
         node.text = update_text(node.text, greek_text)
+
     # this gets child elements... not all DOM nodes	
     for desc in node.getchildren():
         # recursive call
         update_xml(desc, greek_text)
+
     # ElementTree supports mixed content via .tail... 
     if node.tail:
         node.tail = update_text(node.tail, greek_text)
 
 def update_text(text_from_node,greek_text):
     """create new string for element .text or .tail"""
+
     # if I don't have any words; just copy the whitespace
     if not(re.search("\w", text_from_node)):
         return text_from_node
+
     # otherwise; pop some words off the stack
     new_text = ''
     for word in text_from_node.split():
