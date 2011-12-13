@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """ greeker.py 
-    scrambles nouns in an XML document to produce a specimine for layout testing
+    scrambles nouns in an XML document to produce a specimen for layout testing
 """
 import sys
 import argparse
@@ -16,7 +16,7 @@ import argparse
 def main(argv=None):
 
     parser = argparse.ArgumentParser(description='Create greeked text for XML testing.',
-                     epilog="scrambles nouns in an XML document to produce a specimine for layout testing")
+                     epilog="scrambles nouns in an XML document to produce a specimen for layout testing")
 
     parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
                      help='input XML (or standard input)',

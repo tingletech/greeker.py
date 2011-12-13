@@ -10,7 +10,7 @@ optional arguments:
   -h, --help  show this help message and exit
   --piglatin  replace using pig latin rather than more random "words"
 
-scrambles nouns in an XML document to produce a specimine for layout testing
+scrambles nouns in an XML document to produce a specimen for layout testing
 
 TODO: improve whitespace preservation
 TODO: package with setup.py etc. for package distribution
