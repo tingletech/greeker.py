@@ -12,6 +12,5 @@ optional arguments:
 
 scrambles nouns in an XML document to produce a specimen for layout testing
 
-TODO: improve whitespace preservation
 TODO: set up unit tests
 TODO: think about attributes...for EAD, probably want to leave most if not all alone

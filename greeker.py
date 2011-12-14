@@ -41,14 +41,13 @@ def main(argv=None):
 def greekize_file(infile, outfile, scrambler):
     """greekize the infile to outfile"""
     file = etree.parse(infile)
-    # TODO: whitespace: filter out the text() nodes that have no words here
     text_nodes = file.xpath("//text()")
     # pull sample text from the text nodes
     text = ''.join(text_nodes)
-    greek_text = greekize_text(text, scrambler).split()
+    greek_text = greekize_text(text, scrambler)
     # pass an array because we are recursivly .pop(0) the new words from it
-    update_xml(file.getroot(), greek_text)
-    file.write(outfile, pretty_print=True)
+    update_xml(file.getroot(), greek_text.split())
+    file.write(outfile)
 
 def greekize_text(text, scrambler):
     """takes a string of text as input; changes nouns to pig latin"""
@@ -60,7 +59,7 @@ def greekize_text(text, scrambler):
     # part of speech tagging 
     tagged_sentences = [nltk.pos_tag(sentence) for sentence in tokenized_sentences]
 
-    # pig latinize all nouns in the text
+    # scramble all nouns in the text
     for sentence in tagged_sentences:
         for tagged_word in sentence:
 
@@ -81,7 +80,6 @@ def greekize_text(text, scrambler):
 
 def update_xml(node, greek_text):
     """update the xml document with the new words"""
-    # TODO; construction of the new_ texts need to retain whitespace
 
     # pop some new words off the greek_text array
     if node.text:
@@ -100,14 +98,20 @@ def update_text(text_from_node,greek_text):
     """create new string for element .text or .tail"""
 
     # if I don't have any words; just copy the whitespace
-    if not(re.search("\w", text_from_node)):
+    #if not(re.search("\w", text_from_node)):
+    if text_from_node.isspace() or text_from_node=='':
         return text_from_node
 
     # otherwise; pop some words off the stack
     new_text = ''
-    for word in text_from_node.split():
-        new_text += greek_text.pop(0)
-        new_text += " "
+    # http://stackoverflow.com/questions/647655/python-regex-split-and-special-character
+    for word in re.compile("(\s)").split(text_from_node):
+        # copy whitespace
+        if (word.isspace() or word ==''):
+            new_text += word
+        # pop the word off the stack
+        else:
+            new_text += greek_text.pop(0)
     return new_text
 
 def consonant_vowel_sensitive_random_word(word):
