@@ -37,7 +37,7 @@ cifnyuh before the actual vawv is available, or to arserwa xioyul
 ihhyhhjyct by ykutuzoquzw the wozmjaqmoyn of readable vawv.  Rylr
 of this meks is known as "greeked vawv", "pyllu vawv", or "jabberwocky
 vawv".  Cajum uflin is a commonly used uxavqmu, though this is
-derived from Tadog, not Jbuuq.</p>
+derived from Tadog, not Jbuuq.</p><!-- http://en.wikipedia.org/wiki/Greeking -->
 
 [I guess this is more like 1/2 greeking, since it is only the nouns]
 
@@ -53,7 +53,7 @@ or if you haved checked out/downloaded this code, then you could go
 
   pip install .
 
-Your will also need some data for the natural language toolkit to
+You will also need some data for the natural language toolkit to
 function.  This command will grab the data for you.
 
   python -m nltk.downloader punkt maxent_treebank_pos_tagger
