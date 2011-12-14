@@ -62,15 +62,20 @@ def greekize_text(text, scrambler):
     # scramble all nouns in the text
     for sentence in tagged_sentences:
         for tagged_word in sentence:
-
+            # print tagged_word
             # skip "(", not sure what other characters nltk will put in the parse tree
-            if tagged_word[0] in ["(", ")", "[", "]"]:
+            #if tagged_word[0] in ["(", ")", "[", "]"]: XXX
+            if re.search("^\W+$", tagged_word[0]):
                 continue
 
             # replace plural nouns with pig latin
             if tagged_word[1] == 'NNS':
+                # .singular_noun can return a boolean False or a string
                 singular = p.singular_noun(tagged_word[0]);
-                scrambled = p.plural_noun(scrambler(singular))
+                if singular:
+                    scrambled = p.plural_noun(scrambler(singular))
+                else:
+                    scrambled = scrambler(tagged_word[0])
                 text = re.sub(tagged_word[0]+"(\W)",scrambled+"\\1",text)
 
             # replace proper nouns and nouns
@@ -97,6 +102,11 @@ def update_xml(node, greek_text):
 def update_text(text_from_node,greek_text):
     """create new string for element .text or .tail"""
 
+    #print "text_from_node"
+    #print text_from_node.split()
+    #print "greek_text"
+    #print greek_text
+
     # if I don't have any words; just copy the whitespace
     #if not(re.search("\w", text_from_node)):
     if text_from_node.isspace() or text_from_node=='':
@@ -111,7 +121,11 @@ def update_text(text_from_node,greek_text):
             new_text += word
         # pop the word off the stack
         else:
-            new_text += greek_text.pop(0)
+            if len(greek_text) > 0:
+                new_text += greek_text.pop(0)
+            # if we run out of words, just keep going...
+            else:
+                new_text += "ERROR"
     return new_text
 
 def consonant_vowel_sensitive_random_word(word):
