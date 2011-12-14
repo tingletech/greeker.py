@@ -1,8 +1,0 @@
-# python library requirements
-# best for use with virtualenv
-# pip install -r requirements.xml
-PyYAML>=3.10
-inflect>=0.2.1
-lxml>=2.3.2
-numpy>=1.6.1
-nltk>=2.0.1rc2-git

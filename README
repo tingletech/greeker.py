@@ -10,7 +10,35 @@ optional arguments:
   -h, --help  show this help message and exit
   --piglatin  replace using pig latin rather than more random "words"
 
-scrambles nouns in an XML document to produce a specimen for layout testing
+scrambles nouns in an XML document to produce a specimen for layout
+testing
 
-TODO: set up unit tests
-TODO: think about attributes...for EAD, probably want to leave most if not all alone
+-------
+INSTALL
+-------
+
+This command should install greeker.py and its dependencies
+
+  pip install https://github.com/tingletech/greeker.py/tarball/master
+
+or if you haved checked out/downloaded this code, then you could go
+
+  pip install .
+
+Your will also need some data for the natural language toolkit to
+function.  This command will grab the data for you.
+
+  python -m nltk.downloader punkt maxent_treebank_pos_tagger
+
+or just install the nltk data
+
+  python -m nltk.downloader all
+
+
+----
+TODO
+----
+
+set up unit tests
+
+think about attributes...for EAD, probably want to leave most if not all alone
