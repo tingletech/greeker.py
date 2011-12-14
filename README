@@ -14,6 +14,34 @@ scrambles nouns in an XML document to produce a specimen for layout
 testing
 
 -------
+EXAMPLE
+-------
+
+test/sample3.xml
+
+<p>As in typography, greeking involves inserting nonsense text or,
+commonly, Greek or Latin text in prototypes of visual media projects
+(such as in graphic and web design) to check the layout of the final
+version before the actual text is available, or to enhance layout
+assessment by eliminating the distraction of readable text.  Text
+of this sort is known as "greeked text", "dummy text", or "jabberwocky
+text".  Lorem ipsum is a commonly used example, though this is
+derived from Latin, not Greek.</p><!-- http://en.wikipedia.org/wiki/Greeking -->
+
+test/3klein.xml
+
+<p>As in wipafropki, greeking uxzints inserting kykdokdo vawv or,
+commonly, Jbuuq or Tadog vawv in ndararonis of visual mohia fgupects
+(such as in graphic and lim rojugs) to check the xioyul of the final
+cifnyuh before the actual vawv is available, or to arserwa xioyul
+ihhyhhjyct by ykutuzoquzw the wozmjaqmoyn of readable vawv.  Rylr
+of this meks is known as "greeked vawv", "pyllu vawv", or "jabberwocky
+vawv".  Cajum uflin is a commonly used uxavqmu, though this is
+derived from Tadog, not Jbuuq.</p>
+
+[I guess this is more like 1/2 greeking, since it is only the nouns]
+
+-------
 INSTALL
 -------
 
