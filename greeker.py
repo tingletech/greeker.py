@@ -132,6 +132,7 @@ def consonant_vowel_sensitive_random_word(word):
     """scramble word, keeping vowles in the same place"""
     # based on klein method here: https://gist.github.com/1468557
     # specifically here https://gist.github.com/1468557/c3d1ebf5f9ae2805abf9fc242c1a3839dead6843
+    # add an exception for these ^a|an|[Tt]he$
     # seed the random generator with the word, so it will be less random
     random.seed(word)
     vowles = "aeiouy"
