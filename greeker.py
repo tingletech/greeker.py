@@ -135,8 +135,8 @@ def consonant_vowel_sensitive_random_word(word):
     # add an exception for these ^a|an|[Tt]he$
     # seed the random generator with the word, so it will be less random
     random.seed(word)
-    vowles = "aeiouy"
-    consonants = "bcdfghjklmnpqrstvwxz"
+    vowles = u"aeiouy"
+    consonants = u"bcdfghjklmnpqrstvwxz"
     new_vowles = list(vowles)
     new_consonants = list(consonants)
     # shuffles in place
@@ -144,10 +144,14 @@ def consonant_vowel_sensitive_random_word(word):
     random.shuffle(new_consonants)
     vowles = vowles + vowles.upper()
     consonants = consonants + consonants.upper()
+    letters = vowles + consonants
     trans_to = ''.join(new_vowles) + ''.join(new_vowles).upper()
+
     trans_to += ''.join(new_consonants) + ''.join(new_consonants).upper()
+    # http://stackoverflow.com/questions/1324067/how-do-i-get-str-translate-to-work-with-unicode-strings
+    trans_table = dict((ord(char), trans_to) for char in letters)
     randomize = maketrans(vowles + consonants, trans_to)
-    return word.translate(randomize)
+    return word.encode("utf-8").translate(randomize)
 
 def pig_latinize(noun):
     """ convert one word into pig latin """ 
