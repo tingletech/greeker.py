@@ -67,9 +67,6 @@ or just install the nltk data
 TODO
 ----
 
-test/sample2.xml runs out of words where elements/text() are like this
-  some text<tag>[<tag/>]</tag>some text
-
 set up unit tests
 
 think about attributes...for EAD, probably want to leave most if not all alone

@@ -12,11 +12,14 @@ p = inflect.engine()
 import random
 from string import maketrans
 import argparse
+from difflib import SequenceMatcher
 
 def main(argv=None):
     # argument parser 
-    parser = argparse.ArgumentParser(description='Create greeked text for XML testing.',
-                     epilog="scrambles nouns in an XML document to produce a specimen for layout testing")
+    parser = argparse.ArgumentParser(
+                     description='Create greeked text for XML testing.',
+                     epilog="scrambles nouns in an XML document to produce \
+                             a specimen for layout testing")
     parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
                      help='input XML (or standard input)',
                      default=sys.stdin)
@@ -99,7 +102,7 @@ def update_xml(node, greek_text):
     if node.tail:
         node.tail = update_text(node.tail, greek_text)
 
-def update_text(text_from_node,greek_text):
+def update_text(text_from_node, greek_text):
     """create new string for element .text or .tail"""
 
     #print "text_from_node"
@@ -116,7 +119,7 @@ def update_text(text_from_node,greek_text):
     new_text = ''
     # http://stackoverflow.com/questions/647655/python-regex-split-and-special-character
     for word in re.compile("(\s)").split(text_from_node):
-        # copy whitespace
+        # copy whitespace 
         if (word.isspace() or word ==''):
             new_text += word
         # pop the word off the stack
@@ -126,11 +129,37 @@ def update_text(text_from_node,greek_text):
 
 def smart_pop(word, greek_text):
     """messy logic to deal with mixed content with no spaces"""
-    if len(greek_text) > 0:
-        return greek_text.pop(0)
     # if we run out of words, just keep going...
-    else:
+    if len(greek_text) == 0:
         return "ERROR"
+    pop_off = greek_text.pop(0)
+    # word off the stack ends in a non-word character that word does not end in
+    if re.search("\W$", pop_off) and pop_off[-1] != word[-1]:
+        overlap = SequenceMatcher(lambda x: re.search("\w",x), 
+                                  word, 
+                                  pop_off)
+        # no overlapping non-word pards
+        if len(overlap.get_matching_blocks()) - 1 == 0:
+            # put the non-word back on the stack; return only the wordchars out
+            front, back = re.search("(\w+)(\W.*)$",pop_off).group(1, 2)
+            greek_text.insert(0,back)
+            return front
+        
+        # overlapping non-word parts
+        else:
+            # point at which the overlap starts ([0]) in pop_off ([1])
+            point = overlap.get_matching_blocks()[0][1]
+            # put the back of the word back on the stack
+            greek_text.insert(0,pop_off[point+1:len(pop_off)])
+            # return the start
+            return pop_off[0:point+1]
+    # things that start with a non-word in pop_off and have different word pattern
+    elif re.search("^\W+\w.*$", pop_off) and not(re.search("^\W+\w.*$", word)):
+            front, back = re.search("(\W+)(\w.*)$",pop_off).group(1, 2)
+            greek_text.insert(0,back)
+            return front
+        
+    return pop_off
 
 def consonant_vowel_sensitive_random_word(word):
     """scramble word, keeping vowles in the same place"""
