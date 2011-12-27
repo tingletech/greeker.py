@@ -71,6 +71,9 @@ def greekize_text(text, scrambler):
             if re.search("^\W+$", tagged_word[0]):
                 continue
 
+            # escape . b/c we are going to use this is a regex
+            tagged_word_escaped = re.sub('\.','\\\.',tagged_word[0])
+
             # replace plural nouns with pig latin
             if tagged_word[1] == 'NNS':
                 # .singular_noun can return a boolean False or a string
@@ -79,11 +82,11 @@ def greekize_text(text, scrambler):
                     scrambled = p.plural_noun(scrambler(singular))
                 else:
                     scrambled = scrambler(tagged_word[0])
-                text = re.sub(tagged_word[0]+"(\W)",scrambled+"\\1",text)
+                text = re.sub(r'\b'+tagged_word_escaped+"(\W)",scrambled+"\\1",text)
 
             # replace proper nouns and nouns
             if tagged_word[1] in ['NN', 'NNP']:
-                text = re.sub(tagged_word[0]+"(\W)",scrambler(tagged_word[0])+"\\1",text)
+                text = re.sub(r'\b'+tagged_word_escaped+"(\W)",scrambler(tagged_word[0])+"\\1",text)
     return text
 
 def update_xml(node, greek_text):
@@ -133,6 +136,7 @@ def smart_pop(word, greek_text):
     if len(greek_text) == 0:
         return "ERROR"
     pop_off = greek_text.pop(0)
+    # print word, pop_off
     # word off the stack ends in a non-word character that word does not end in
     if re.search("\W$", pop_off) and pop_off[-1] != word[-1]:
         overlap = SequenceMatcher(lambda x: re.search("\w",x), 
@@ -185,7 +189,9 @@ def consonant_vowel_sensitive_random_word(word):
     trans_to += ''.join(new_consonants) + ''.join(new_consonants).upper()
     # http://stackoverflow.com/questions/1324067/how-do-i-get-str-translate-to-work-with-unicode-strings
     randomize = maketrans(vowles + consonants, trans_to)
-    return word.encode("utf-8").translate(randomize)
+    res = word.encode("utf-8").translate(randomize)
+    # print word, res
+    return res
 
 def pig_latinize(noun):
     """ convert one word into pig latin """ 
