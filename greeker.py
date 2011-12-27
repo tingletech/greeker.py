@@ -121,19 +121,25 @@ def update_text(text_from_node,greek_text):
             new_text += word
         # pop the word off the stack
         else:
-            if len(greek_text) > 0:
-                new_text += greek_text.pop(0)
-            # if we run out of words, just keep going...
-            else:
-                new_text += "ERROR"
+            new_text += smart_pop(word, greek_text)
     return new_text
+
+def smart_pop(word, greek_text):
+    """messy logic to deal with mixed content with no spaces"""
+    if len(greek_text) > 0:
+        return greek_text.pop(0)
+    # if we run out of words, just keep going...
+    else:
+        return "ERROR"
 
 def consonant_vowel_sensitive_random_word(word):
     """scramble word, keeping vowles in the same place"""
     # based on klein method here: https://gist.github.com/1468557
     # specifically here https://gist.github.com/1468557/c3d1ebf5f9ae2805abf9fc242c1a3839dead6843
-    # add an exception for these ^a|an|[Tt]he$
+    # add an exception for these ^[Aa]|[Aa]n|[Tt]he$
     # seed the random generator with the word, so it will be less random
+    #if re.search('^[Aa]|[Aa]n|[Tt]he$', word):
+    #   return word
     random.seed(word)
     vowles = u"aeiouy"
     consonants = u"bcdfghjklmnpqrstvwxz"
@@ -149,7 +155,6 @@ def consonant_vowel_sensitive_random_word(word):
 
     trans_to += ''.join(new_consonants) + ''.join(new_consonants).upper()
     # http://stackoverflow.com/questions/1324067/how-do-i-get-str-translate-to-work-with-unicode-strings
-    trans_table = dict((ord(char), trans_to) for char in letters)
     randomize = maketrans(vowles + consonants, trans_to)
     return word.encode("utf-8").translate(randomize)
 
