@@ -168,12 +168,12 @@ def smart_pop(word, greek_text):
 def consonant_vowel_sensitive_random_word(word):
     """scramble word, keeping vowles in the same place"""
     # based on klein method here: https://gist.github.com/1468557
-    # specifically here https://gist.github.com/1468557/c3d1ebf5f9ae2805abf9fc242c1a3839dead6843
+    # specifically https://gist.github.com/1468557/c3d1ebf5f9ae2805abf9fc242c1a3839dead6843
     # add an exception for these ^[Aa]|[Aa]n|[Tt]he$
     # seed the random generator with the word, so it will be less random
     #if re.search('^[Aa]|[Aa]n|[Tt]he$', word):
     #   return word
-    random.seed(word)
+    random.seed(word.lower())
     vowles = u"aeiouy"
     consonants = u"bcdfghjklmnpqrstvwxz"
     new_vowles = list(vowles)
