@@ -12,7 +12,6 @@ p = inflect.engine()
 import random
 from string import maketrans
 import argparse
-from difflib import SequenceMatcher
 
 def main(argv=None):
     # argument parser 
@@ -94,11 +93,11 @@ def update_xml(node, greek_text):
     """update the xml document with the new words"""
 
     # pop some new words off the greek_text array
-    if node.text:
+    if node.text and (not isinstance(node, (etree._Comment, etree._ProcessingInstruction))):
         node.text = update_text(node.text, greek_text)
 
     # this gets child elements... not all DOM nodes	
-    for desc in node.getchildren():
+    for desc in list(node):
         # recursive call
         update_xml(desc, greek_text)
 
