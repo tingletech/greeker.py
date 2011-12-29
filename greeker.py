@@ -46,7 +46,8 @@ def greekize_file(infile, outfile, scrambler):
     file = etree.parse(infile)
     text_nodes = file.xpath("//text()")
     # pull sample text from the text nodes
-    text = ''.join(text_nodes)
+    text = ' '.join(text_nodes)
+    # print text
     greek_text = greekize_text(text, scrambler)
     # pass an array because we are recursivly .pop(0) the new words from it
     update_xml(file.getroot(), greek_text.split())
@@ -136,33 +137,6 @@ def smart_pop(word, greek_text):
     if len(greek_text) == 0:
         return "ERROR"
     pop_off = greek_text.pop(0)
-    # print word, pop_off
-    # word off the stack ends in a non-word character that word does not end in
-    if re.search("\W$", pop_off) and pop_off[-1] != word[-1]:
-        overlap = SequenceMatcher(lambda x: re.search("\w",x), 
-                                  word, 
-                                  pop_off)
-        # no overlapping non-word pards
-        if len(overlap.get_matching_blocks()) - 1 == 0:
-            # put the non-word back on the stack; return only the wordchars out
-            front, back = re.search("(\w+)(\W.*)$",pop_off).group(1, 2)
-            greek_text.insert(0,back)
-            return front
-        
-        # overlapping non-word parts
-        else:
-            # point at which the overlap starts ([0]) in pop_off ([1])
-            point = overlap.get_matching_blocks()[0][1]
-            # put the back of the word back on the stack
-            greek_text.insert(0,pop_off[point+1:len(pop_off)])
-            # return the start
-            return pop_off[0:point+1]
-    # things that start with a non-word in pop_off and have different word pattern
-    elif re.search("^\W+\w.*$", pop_off) and not(re.search("^\W+\w.*$", word)):
-            front, back = re.search("(\W+)(\w.*)$",pop_off).group(1, 2)
-            greek_text.insert(0,back)
-            return front
-        
     return pop_off
 
 def consonant_vowel_sensitive_random_word(word):
