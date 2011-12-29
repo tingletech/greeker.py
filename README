@@ -67,7 +67,7 @@ or just install the nltk data
 TODO
 ----
 
-set up unit tests
+add "--attributes att1 att2 ..." command line option to specify xml 
+attributes by local name that should be greeked. (default is no greeking of attributes)
 
-think about attributes...for EAD, probably want to leave most if not all alone
-
+set up unit tests using some sort of orthodox tool or method
