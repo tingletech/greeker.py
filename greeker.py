@@ -55,7 +55,7 @@ def greekize_file(infile, outfile, scrambler):
 def greekize_text(text, scrambler):
     """takes a string of text as input; changes nouns to pig latin"""
 
-    # array of all the sentences (is this necessary?)
+    # array of all the sentences
     sentences = nltk.sent_tokenize(text)
     tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]
 
@@ -66,15 +66,14 @@ def greekize_text(text, scrambler):
     for sentence in tagged_sentences:
         for tagged_word in sentence:
             # print tagged_word
-            # skip "(", not sure what other characters nltk will put in the parse tree
-            #if tagged_word[0] in ["(", ")", "[", "]"]: XXX
+            # skip if the word is all non-word \W characters
             if re.search("^\W+$", tagged_word[0]):
                 continue
 
-            # escape . b/c we are going to use this is a regex
+            # escape '.' b/c we are going to use this is a regex
             tagged_word_escaped = re.sub('\.','\\\.',tagged_word[0])
 
-            # replace plural nouns with pig latin
+            # replace plural nouns NNS with scrabled word; preserving inflection
             if tagged_word[1] == 'NNS':
                 # .singular_noun can return a boolean False or a string
                 singular = p.singular_noun(tagged_word[0]);
@@ -84,7 +83,7 @@ def greekize_text(text, scrambler):
                     scrambled = scrambler(tagged_word[0])
                 text = re.sub(r'\b'+tagged_word_escaped+"(\W)",scrambled+"\\1",text)
 
-            # replace proper nouns and nouns
+            # replace proper nouns NNP and nouns NN
             if tagged_word[1] in ['NN', 'NNP']:
                 text = re.sub(r'\b'+tagged_word_escaped+"(\W)",scrambler(tagged_word[0])+"\\1",text)
     return text
@@ -108,13 +107,7 @@ def update_xml(node, greek_text):
 def update_text(text_from_node, greek_text):
     """create new string for element .text or .tail"""
 
-    #print "text_from_node"
-    #print text_from_node.split()
-    #print "greek_text"
-    #print greek_text
-
     # if I don't have any words; just copy the whitespace
-    #if not(re.search("\w", text_from_node)):
     if text_from_node.isspace() or text_from_node=='':
         return text_from_node
 
@@ -131,7 +124,9 @@ def update_text(text_from_node, greek_text):
     return new_text
 
 def smart_pop(word, greek_text):
-    """messy logic to deal with mixed content with no spaces"""
+    """refactor: this used to have some hackish logic to deal with text nodes with no text,
+    it still prevents a fatal error if something goes wrong and we run out of greeked words
+    """
     # if we run out of words, just keep going...
     if len(greek_text) == 0:
         return "ERROR"
@@ -142,10 +137,7 @@ def consonant_vowel_sensitive_random_word(word):
     """scramble word, keeping vowles in the same place"""
     # based on klein method here: https://gist.github.com/1468557
     # specifically https://gist.github.com/1468557/c3d1ebf5f9ae2805abf9fc242c1a3839dead6843
-    # add an exception for these ^[Aa]|[Aa]n|[Tt]he$
     # seed the random generator with the word, so it will be less random
-    #if re.search('^[Aa]|[Aa]n|[Tt]he$', word):
-    #   return word
     random.seed(word.lower())
     vowles = u"aeiouy"
     consonants = u"bcdfghjklmnpqrstvwxz"
