@@ -71,8 +71,9 @@ def greekize_text(text, scrambler):
             if re.search("^\W+$", tagged_word[0]):
                 continue
 
-            # escape '.' b/c we are going to use this is a regex
+            # escape '.', '|' b/c we are going to use this is a regex
             tagged_word_escaped = re.sub('\.','\\\.',tagged_word[0])
+            tagged_word_escaped = re.sub('\|','\\\|',tagged_word[0])
 
             # replace plural nouns NNS with scrabled word; preserving inflection
             if tagged_word[1] == 'NNS':
