@@ -11,7 +11,6 @@ import re
 import inflect
 p = inflect.engine()
 import random
-from string import maketrans
 import argparse
 
 def main(argv=None):
@@ -135,6 +134,11 @@ def smart_pop(word, greek_text):
     pop_off = greek_text.pop(0)
     return pop_off
 
+def makeunitrans(trans_from, trans_to):
+    # http://stackoverflow.com/a/4547728/1763984
+    # http://stackoverflow.com/questions/1324067/how-do-i-get-str-translate-to-work-with-unicode-strings
+    return dict((ord(c), trans_to[i]) for i, c in enumerate(trans_from))
+
 def consonant_vowel_sensitive_random_word(word):
     """scramble word, keeping vowles in the same place"""
     # based on klein method here: https://gist.github.com/1468557
@@ -155,8 +159,8 @@ def consonant_vowel_sensitive_random_word(word):
 
     trans_to += ''.join(new_consonants) + ''.join(new_consonants).upper()
     # http://stackoverflow.com/questions/1324067/how-do-i-get-str-translate-to-work-with-unicode-strings
-    randomize = maketrans(vowles + consonants, trans_to)
-    res = word.encode("utf-8").translate(randomize)
+    randomize = makeunitrans(vowles + consonants, trans_to)
+    res = word.translate(randomize)
     # print word, res
     return res
 
