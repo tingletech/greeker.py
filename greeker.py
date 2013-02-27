@@ -2,6 +2,7 @@
 """ greeker.py 
     scrambles nouns in an XML document to produce a specimen for layout testing
 """
+from __future__ import unicode_literals
 import sys
 import argparse
 import nltk
