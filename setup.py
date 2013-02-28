@@ -1,6 +1,6 @@
 from distutils.core import setup
 setup(name='greeker',
-      version='0.3.1-git',
+      version='0.3.2-git',
       description="scrambles nouns in an XML document to produce a specimen for layout testing",
       author="Brian Tingle",
       author_email="brian.tingle.cdlib.org@gmail.com",

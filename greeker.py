@@ -72,7 +72,7 @@ def greekize_text(text, scrambler):
 
             # escape '.', '|' b/c we are going to use this is a regex
             tagged_word_escaped = re.sub('\.','\\\.',tagged_word[0])
-            tagged_word_escaped = re.sub('\|','\\\|',tagged_word[0])
+            tagged_word_escaped = re.sub('\|','\\\|',tagged_word_escaped)
 
             # replace plural nouns NNS with scrabled word; preserving inflection
             if tagged_word[1] == 'NNS':
@@ -161,7 +161,7 @@ def consonant_vowel_sensitive_random_word(word):
     # http://stackoverflow.com/questions/1324067/how-do-i-get-str-translate-to-work-with-unicode-strings
     randomize = makeunitrans(vowles + consonants, trans_to)
     res = word.translate(randomize)
-    # print word, res
+    #print word, res
     return res
 
 def pig_latinize(noun):
