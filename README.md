@@ -1,3 +1,7 @@
+
+[![Build Status](https://travis-ci.org/tingletech/greeker.py.png)](https://travis-ci.org/tingletech/greeker.py)
+
+```
 usage: greeker.py [-h] [--piglatin] [infile] [outfile]
 
 Create greeked text for XML testing.
@@ -12,6 +16,7 @@ optional arguments:
 
 scrambles nouns in an XML document to produce a specimen for layout
 testing
+```
 
 -------
 EXAMPLE
@@ -19,6 +24,7 @@ EXAMPLE
 
 test/sample3.xml
 
+```xml
 <p>As in typography, greeking involves inserting nonsense text or,
 commonly, Greek or Latin text in prototypes of visual media projects
 (such as in graphic and web design) to check the layout of the final
@@ -27,9 +33,11 @@ assessment by eliminating the distraction of readable text.  Text
 of this sort is known as "greeked text", "dummy text", or "jabberwocky
 text".  Lorem ipsum is a commonly used example, though this is
 derived from Latin, not Greek.</p><!-- http://en.wikipedia.org/wiki/Greeking -->
+```
 
 test/3klein.xml
 
+```
 <p>As in wipafropki, greeking uxzints inserting kykdokdo vawv or,
 commonly, Vxiic or Nypoz vawv in ndararonis of visual mohia fgupects
 (such as in graphic and lim rojugs) to check the xioyul of the final
@@ -38,6 +46,7 @@ ihhyhhjyct by ykutuzoquzw the wozmjaqmoyn of readable vawv.  Vawv
 of this meks is known as "greeked vawv", "pyllu vawv", or "jabberwocky
 vawv".  Sutab uflin is a commonly used uxavqmu, though this is
 derived from Nypoz, not Vxiic.</p><!-- http://en.wikipedia.org/wiki/Greeking -->
+```
 
 [I guess this is more like 1/2 greeking, since it is only the nouns]
 
@@ -45,23 +54,32 @@ derived from Nypoz, not Vxiic.</p><!-- http://en.wikipedia.org/wiki/Greeking -->
 INSTALL
 -------
 
-This command should install greeker.py and its dependencies
+This command should install greeker.py and its dependencies.
 
-  pip install https://github.com/tingletech/greeker.py/tarball/master
+Requires Python 2.5, 2.6, or 2.7 -- does not work with Python 3.
+
+```sh
+pip install https://github.com/tingletech/greeker.py/tarball/master
+```
 
 or if you haved checked out/downloaded this code, then you could go
 
-  pip install .
+```sh
+pip install .
+```
 
 You will also need some data for the natural language toolkit to
 function.  This command will grab the data for you.
 
-  python -m nltk.downloader punkt maxent_treebank_pos_tagger
+```sh
+python -m nltk.downloader punkt maxent_treebank_pos_tagger
+```
 
 or just install the nltk data
 
-  python -m nltk.downloader all
-
+```sh
+python -m nltk.downloader all
+```
 
 ----
 TODO
