@@ -18,7 +18,6 @@ scrambles nouns in an XML document to produce a specimen for layout
 testing
 ```
 
--------
 EXAMPLE
 -------
 
@@ -50,7 +49,6 @@ derived from Nypoz, not Vxiic.</p><!-- http://en.wikipedia.org/wiki/Greeking -->
 
 [I guess this is more like 1/2 greeking, since it is only the nouns]
 
--------
 INSTALL
 -------
 
@@ -81,7 +79,6 @@ or just install the nltk data
 python -m nltk.downloader all
 ```
 
-----
 TODO
 ----
 

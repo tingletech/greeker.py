@@ -1,5 +1,6 @@
 # poor man't testing
 #
+set -eu
 ../greeker.py sample1.xml 1klein.xml
 ../greeker.py sample2.xml 2klein.xml
 ../greeker.py sample3.xml 3klein.xml
