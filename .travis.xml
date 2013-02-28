@@ -1,0 +1,17 @@
+language: python
+python:
+  - "2.5"
+  - "2.6"
+  - "2.7"
+  - "3.2"
+  # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
+  # maintainers to fix their pypy-dev package.
+  - "pypy"
+
+install:
+  - pip install . --use-mirrors
+  - python -m nltk.downloader punkt maxent_treebank_pos_tagger
+
+script:
+  - cd test
+  - sh generate.sh
