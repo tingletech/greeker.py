@@ -54,7 +54,7 @@ INSTALL
 
 This command should install greeker.py and its dependencies.
 
-Requires Python 2.5, 2.6, or 2.7 -- does not work with Python 3.
+Requires Python 2.6, or 2.7 -- does not work with Python 3 nor 2.5.
 
 ```sh
 pip install https://github.com/tingletech/greeker.py/tarball/master
