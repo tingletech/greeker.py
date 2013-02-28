@@ -8,4 +8,4 @@ set -eu
 ../greeker.py --piglatin sample2.xml 2piglatin.xml
 ../greeker.py --piglatin sample3.xml 3piglatin.xml
 xmllint --noout *.xml
-git diff
+git diff *.xml

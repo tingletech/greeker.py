@@ -79,10 +79,20 @@ or just install the nltk data
 python -m nltk.downloader all
 ```
 
+TESTING
+-------
+
+You will need to have the project checked out with git to run the
+tests, as the tests use git to make sure the results do not change.
+
+```sh
+cd test
+sh generate.sh
+```
+
 TODO
 ----
 
 add "--attributes att1 att2 ..." command line option to specify xml 
 attributes by local name that should be greeked. (default is no greeking of attributes)
 
-set up unit tests using some sort of orthodox tool or method
